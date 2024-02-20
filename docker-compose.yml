@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  node-app:
+    build: .
+    image: node-app
+    environment:
+      - MONGODB_URL=mongodb://10.50.61.25:27017/gtalk
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/node-app
+    networks:
+      - node-network
+      - swag-overlay
+    command: yarn dev -L
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "50"
+
+networks:
+  node-network:
+    driver: bridge
+  swag-overlay:
+    external: true
+    driver: overlay
